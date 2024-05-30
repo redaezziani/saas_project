@@ -8,7 +8,7 @@ const NavBar = async () => {
     const session = await auth();
     return (
         <nav
-            className=' fixed top-0 border border-border/80 md:border-none  bg-transparent backdrop-blur-md max-w-6xl justify-between items-center w-full flex gap-4 px-4 py-2  z-50 '
+            className='sticky top-0 border-b bg-white  border-border   bg-transparent backdrop-blur-md w-full  justify-between items-center  flex gap-4 px-4 py-2  z-50 '
         >
             <div className="flex gap-2 justify-start items-center font-semibold ">
                 <img
@@ -23,37 +23,8 @@ const NavBar = async () => {
                 </p>
             </div>
             <div className="flex gap-3 justify-start items-center">
-                <div className="md:flex hidden gap-4 bg-white/45 backdrop-blur-sm text-sm rounded-lg border border-border px-4 py-2 justify-end items-center">
-                    <a
-                        className=' text-slate-600'
-                        href="#"
-                    >
-                        Home
-                    </a>
-                    <a
-                        className=' text-slate-600'
-                        href="#"
-                    >
-                        Features
-                    </a>
-                    <a
-                        className=' text-slate-600'
-                        href="#"
-                    >
-                        Pricing
-                    </a>
-                    <a
-                        className=' text-slate-600'
-                        href="#"
-                    >
-                        Contact
-                    </a>
-                    <a
-                        className=' text-slate-600'
-                        href="#"
-                    >
-                        Blog
-                    </a>
+                <div className="md:flex hidden ">
+                  
                 </div>
                 {session && <UserAvatar />}
                 {!session && <SignIn />}

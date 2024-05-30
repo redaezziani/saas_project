@@ -2,75 +2,158 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
- 
+
 generator client {
   provider = "prisma-client-js"
 }
- enum Role {
+
+enum Role {
   admin
   client
   guest
 }
+
+/// User model represents the users of the application.
 model User {
   id            String          @id @default(cuid())
-  name          String?
+  name          String?         
   username      String?         @unique
   email         String?         @unique
   emailVerified DateTime?
   image         String?
-  Session       Session[]
-  Account       Account?
+  sessions      Session[]
+  account       Account?
   role          Role            @default(guest)
-  Authenticator Authenticator[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  authenticator Authenticator[]
+  notes         Note[]
+  employee      Employee?
+  notifications Notification[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([email])
 }
- 
+
+/// Employee model represents the employees managed by the users.
+model Employee {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  firstName   String
+  lastName    String
+  email       String   @unique
+  phone       String?
+  hireDate    DateTime
+  jobTitle    String
+  department  String
+  expenses    EmployeeExpense[]
+  timesheets  Timesheet[]
+  projects    Project[] @relation("ProjectManager")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  manager   Project[]
+  @@index([email])
+}
+
+/// GeneralExpense model represents general expenses.
+model GeneralExpense {
+  id          String   @id @default(cuid())
+  name        String
+  amount      Decimal  @db.Decimal(10,2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// EmployeeExpense model represents the expenses incurred by employees.
+model EmployeeExpense {
+  id          String   @id @default(cuid())
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  employeeId  String
+  date        DateTime
+  amount      Decimal  @db.Decimal(10,2)
+  description String
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// Project model represents the projects managed by employees.
+model Project {
+  id         String   @id @default(cuid())
+  name       String   
+  startDate  DateTime
+  endDate    DateTime
+  budget     Decimal  @db.Decimal(10,2)
+  manager    Employee @relation(fields: [managerId], references: [id])
+  managerId  String
+  timesheets Timesheet[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt  
+  employees  Employee[] @relation("ProjectManager")
+}
+
+/// Timesheet model represents the timesheets filled by employees for projects.
+model Timesheet {
+  id          String   @id @default(cuid())
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  employeeId  String
+  project     Project  @relation(fields: [projectId], references: [id])  
+  projectId   String
+  workDate    DateTime
+  hours       Decimal  @db.Decimal(4,2)
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// Account model represents the accounts linked to users for authentication.
 model Account {
-  id                       String  @id @default(cuid())
-  userId                   String  @unique
+  id                       String   @id @default(cuid())
+  userId                   String   @unique
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?  @db.Text
+  access_token             String?  @db.Text
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?  @db.Text
   session_state            String?
   refresh_token_expires_in Int?
-  user                     User?   @relation(fields: [userId], references: [id])
- 
+  user                     User     @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   @@unique([provider, providerAccountId])
   @@index([userId])
 }
- 
+
+/// Session model represents the sessions of users.
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id])
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   @@index([userId])
 }
- 
+
+/// VerificationToken model represents the tokens used for verifying user actions.
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@unique([identifier, token])
 }
- 
-// Optional for WebAuthn support
+
+/// Authenticator model represents the authenticators linked to users.
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -80,8 +163,36 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([userId, credentialID])
 }
+
+/// Note model represents the notes created by users.
+model Note {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Notification model represents the notifications sent to users.
+model Notification {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  message   String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+
+
+

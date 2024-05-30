@@ -1,6 +1,7 @@
-import Credentials from "@/components/home/form";
+import Credentials from "@/components/home/sign-ing-form";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import SignInForm from "@/components/home/sign-ing-form";
 export default function SignInPage() {
   return (
     <section
@@ -10,19 +11,22 @@ export default function SignInPage() {
         <div className="w-full absolute top-4 left-5  flex justify-start items-start">
           <Link
             href="/"
+            className="flex cursor-pointer text-slate-500 hover:text-slate-600 transition-colors duration-200 ease-in-out items-center"
           >
             <ChevronLeft
-              className="cursor-pointer text-slate-500 hover:text-slate-600 transition-colors duration-200 ease-in-out"
+              className=""
               size={18} />
+              back to home 
           </Link>
         </div>
-        <Credentials />
+        <SignInForm />
       </div>
       <div className="w-full h-screen pt-3 col-span-1 hidden overflow-hidden md:block">
         <img
           alt="Image"
-          className="object-cover rounded-tl-xl w-full h-full"
-          src="/image.png" />
+          className="object-cover border border-border rounded-tl-xl w-full h-full"
+          src="/image.png"
+        />
       </div>
     </section>
   );

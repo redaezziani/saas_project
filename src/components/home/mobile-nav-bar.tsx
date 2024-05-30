@@ -20,7 +20,7 @@ const MobileNavBar = () => {
             <SheetTrigger asChild>
                 <Button
                     size={'icon'}
-                    className=" p-0"
+                    className=" p-0 z-20"
                     variant="outline">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={20} height={20} fill={"none"}>
                         <path d="M10 5L20 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -30,7 +30,7 @@ const MobileNavBar = () => {
                 </Button>
             </SheetTrigger>
             <SheetContent>
-
+                hjshahhskh
             </SheetContent>
         </Sheet>
     )
