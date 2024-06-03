@@ -1,7 +1,6 @@
-import Credentials from "@/components/home/sign-ing-form";
-import { ChevronLeft } from "lucide-react";
+import {  MoveLeft } from "lucide-react";
 import Link from "next/link";
-import SignInForm from "@/components/home/sign-ing-form";
+import SignInForm from "@/components/home/sign-in-form";
 export default function SignInPage() {
   return (
     <section
@@ -11,12 +10,12 @@ export default function SignInPage() {
         <div className="w-full absolute top-4 left-5  flex justify-start items-start">
           <Link
             href="/"
-            className="flex cursor-pointer text-slate-500 hover:text-slate-600 transition-colors duration-200 ease-in-out items-center"
+            className="flex gap-1 cursor-pointer text-slate-400 hover:text-slate-500 transition-colors duration-200 ease-in-out items-center"
           >
-            <ChevronLeft
+            <MoveLeft
               className=""
               size={18} />
-              back to home 
+              Back to home 
           </Link>
         </div>
         <SignInForm />

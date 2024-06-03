@@ -1,3 +1,4 @@
+'use client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,34 +8,56 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { auth } from "@/auth";
-import SignOut from "@/components/home/sign-out";
 import { CreditCard } from "lucide-react";
-
-const UserAvatar = async () => {
-  const session = await auth();
+import useSWR from 'swr';
+import {Home,Settings, Profile ,Logout} from '../dashbaord/globals/icons'
+//@ts-ignore
+const fetcher = (url) => fetch(url).then((res) => res.json());
+const UserAvatar =  () => {
+  const { data: user, error } = useSWR('/api/user', fetcher);
+   const Links = [
+    {link: '/dashbaord', icon: <Home />},
+    {link: '/profile', icon: <Profile />},
+    {link: '/settings', icon: <Settings />},
+   ];
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar
           className="cursor-pointer "
         >
-          {session && (<AvatarImage src={session.user.image} alt={session.user.name} />)}
-          <AvatarFallback>
-            {session && session.user.name[0]}
+         <AvatarImage
+          src={user?.data?.avatar}
+           alt={''} />
+          <AvatarFallback
+          className=" capitalize"
+          >
+            {user?.data?.name.charAt(0)}
           </AvatarFallback>
         </Avatar>
 
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem className="flex gap-1 w-full justify-start items-center">
-          <CreditCard size={16} />
-          Billing
-        </DropdownMenuItem>
-          <SignOut />
+      <DropdownMenuContent
+      className=" border-slate-400/35 shadow-none"
+      >
+        <DropdownMenuLabel
+        className="text-slate-700 text-sm font-medium"
+        >
+          {user?.data?.email}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator
+        className="bg-slate-400/35"
+        />
+        {Links.map((link, index) => (
+          <DropdownMenuItem
+          key={index}
+          href={link}
+          className="flex cursor-pointer transition-all ease-in-out duration-500 items-center gap-2 text-slate-500"
+          >
+            {link.icon}
+            <span>{link.link.replace('/', '')}</span>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )

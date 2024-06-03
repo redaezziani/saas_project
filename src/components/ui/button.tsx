@@ -40,7 +40,7 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, loading = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, loading = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
@@ -48,26 +48,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        
+        {loading ? <ButtonSpinner /> : children}
       </Comp>
     )
   }
 )
 Button.displayName = "Button"
 
-
-const buttonSpiner = () => {
+const ButtonSpinner = () => {
   return (
-    <div className="flex  font-semibold gap-2">
-      <LoaderCircle
-        className="animate-spin ease-out duration-700"
-        size={20} />
-      <span>
+    <div className="flex items-center gap-2">
+      <LoaderCircle 
+        className="animate-spin" 
+        size={20} 
+      />
+      <span className="font-medium">
         Loading...
       </span>
     </div>
   )
 }
-
 
 export { Button, buttonVariants }

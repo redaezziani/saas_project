@@ -43,10 +43,9 @@ const Toast = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & VariantProps<typeof toastVariants>
 >(({
   className,
-  variant, // Extract variant from props
+  variant, 
   ...props
 }, ref) => {
-  // Define the icon for each variant
   const variantIcons = {
     success: (
       <div className="size-8 border-primary-500/55 border rounded-full flex justify-center items-center relative before:size-12 before:border before:border-primary-500/30 before:rounded-full before:absolute">

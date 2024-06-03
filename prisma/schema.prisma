@@ -17,21 +17,61 @@ enum Role {
 model User {
   id            String          @id @default(cuid())
   name          String?         
-  username      String?         @unique
   email         String?         @unique
   emailVerified DateTime?
+  password      String         @db.VarChar(120)
+  isVerified   Boolean                  @default(false)
   image         String?
-  sessions      Session[]
   account       Account?
   role          Role            @default(guest)
-  authenticator Authenticator[]
   notes         Note[]
   employee      Employee?
   notifications Notification[]
+  resetPasswordRequests ResetPasswordRequest[]
+  userVerificationRequests UserVerificationRequest[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-
+  deletedAt     DateTime?
   @@index([email])
+}
+
+/// VerificationToken model represents the tokens used for verifying user actions.
+model ResetPasswordRequest {
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  token     Int    @unique
+  expires   DateTime
+  userId    String    @unique @db.VarChar(36)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model UserVerificationRequest {
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  token     String    @unique
+  expires   DateTime
+  userId    String    @unique @db.VarChar(36)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+
+/// Account model represents the accounts of the users.
+ enum Plan {
+  free
+  premium
+}
+
+model Account {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  activePlan  Plan     @default(free)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 /// Employee model represents the employees managed by the users.
@@ -39,20 +79,19 @@ model Employee {
   id          String   @id @default(cuid())
   user        User     @relation(fields: [userId], references: [id])
   userId      String   @unique
-  firstName   String
-  lastName    String
-  email       String   @unique
+  firstName   String?
+  lastName    String?
   phone       String?
+  daySalary   Float?
+  monthSalary Float?
   hireDate    DateTime
   jobTitle    String
-  department  String
-  expenses    EmployeeExpense[]
   timesheets  Timesheet[]
   projects    Project[] @relation("ProjectManager")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   manager   Project[]
-  @@index([email])
+  @@index([firstName])
 }
 
 /// GeneralExpense model represents general expenses.
@@ -60,19 +99,6 @@ model GeneralExpense {
   id          String   @id @default(cuid())
   name        String
   amount      Decimal  @db.Decimal(10,2)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-/// EmployeeExpense model represents the expenses incurred by employees.
-model EmployeeExpense {
-  id          String   @id @default(cuid())
-  employee    Employee @relation(fields: [employeeId], references: [id])
-  employeeId  String
-  date        DateTime
-  amount      Decimal  @db.Decimal(10,2)
-  description String
-  category    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -104,69 +130,6 @@ model Timesheet {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-/// Account model represents the accounts linked to users for authentication.
-model Account {
-  id                       String   @id @default(cuid())
-  userId                   String   @unique
-  type                     String
-  provider                 String
-  providerAccountId        String
-  refresh_token            String?  @db.Text
-  access_token             String?  @db.Text
-  expires_at               Int?
-  token_type               String?
-  scope                    String?
-  id_token                 String?  @db.Text
-  session_state            String?
-  refresh_token_expires_in Int?
-  user                     User     @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
-}
-
-/// Session model represents the sessions of users.
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-}
-
-/// VerificationToken model represents the tokens used for verifying user actions.
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-/// Authenticator model represents the authenticators linked to users.
-model Authenticator {
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([userId, credentialID])
 }
 
 /// Note model represents the notes created by users.

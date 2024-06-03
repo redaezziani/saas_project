@@ -1,33 +1,41 @@
-import { Button } from '../ui/button'
+
+import { Button } from '@/components/ui/button'
 import MobileNavBar from './mobile-nav-bar'
 import UserAvatar from './user-avatar'
-import SignIn from './sign-in'
-import { auth } from '@/auth'
 
-const NavBar = async () => {
-    const session = await auth();
+import { Input } from '@/components/ui/input'
+import { Search, SearchSlashIcon } from 'lucide-react';
+
+const NavBar =  () => {
+    
     return (
         <nav
             className='sticky top-0 border-b bg-white  border-border   bg-transparent backdrop-blur-md w-full  justify-between items-center  flex gap-4 px-4 py-2  z-50 '
         >
-            <div className="flex gap-2 justify-start items-center font-semibold ">
-                <img
-                    className=" size-11"
-                    src="/icon.png"
-                    alt="logo"
+            <div className="flex  gap-3 justify-start items-center">
+        <img
+        className="w-6 h-6"
+        src="/icon.svg"
+        alt="icon"
+        />
+        <h1 className="text-md font-bold text-slate-800">
+        Talent <span
+        className="   text-primary"
+        >Track</span>
+        </h1>
+      </div>
+            <div className=" hidden md:flex relative w-full max-w-lg justify-start items-center ">
+                <Search className=' text-slate-400 absolute right-3 w-5 h-5'/>
+                <Input
+                placeholder=' search for somthing...'
                 />
-                <p
-                    className=' text-slate-600'
-                >
-                    Nexsus
-                </p>
             </div>
             <div className="flex gap-3 justify-start items-center">
                 <div className="md:flex hidden ">
                   
                 </div>
-                {session && <UserAvatar />}
-                {!session && <SignIn />}
+              
+                <UserAvatar />
                 <div
                     className='md:hidden flex gap-4 justify-end items-center'
                 >
