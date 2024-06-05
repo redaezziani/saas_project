@@ -81,12 +81,19 @@ export function DataTable({ data, columns, loading = false, total = 0, element }
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
-        state: {
-          sorting,
-          columnFilters,
-          columnVisibility,
-          rowSelection,
+        
+        initialState: {
+            pagination: {
+              pageIndex:0, //custom initial page index
+              pageSize: 9, //custom default page size
+            },
         },
+        state: {
+            sorting,
+            columnFilters,
+            columnVisibility,
+            rowSelection,
+          },
       });
       
 
@@ -215,12 +222,13 @@ export function DataTable({ data, columns, loading = false, total = 0, element }
 const Pagination = ({ table }: any) => {
     return (
         <div className=" flex gap-2 justify-center items-center">
-            <Button
+          
+              <Button
                 variant="outline"
                 size="sm"
                 className=" size-8 p-1 border-slate-400/35 text-slate-500 font-semibold"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
             >
                 <MoveLeft
                     className=" text-slate-800 size-4"
@@ -252,13 +260,15 @@ const Pagination = ({ table }: any) => {
                 variant="outline"
                 size="sm"
                 className=" size-8 p-1 border-slate-400/35 text-slate-500 font-semibold"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
             >
                 <MoveLeft
                     className=" text-slate-800 size-4 transform rotate-180"
                 />
+                
             </Button>
+          
         </div>
     )
 }

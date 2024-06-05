@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm, Controller } from 'react-hook-form';
@@ -101,6 +101,23 @@ const CreateEmployee = () => {
     }
 
   };
+
+  useEffect(() => {
+    // lest add a key down event to close the modal and the modal is opened if ctr + e is pressed
+    // lets dispaly the browser key envet
+    
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'e') {
+        setIsOpened(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+
+
+  }, []);
 
   return (
     <Sheet open={isOpened} onOpenChange={setIsOpened}>

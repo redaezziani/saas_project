@@ -15,6 +15,9 @@ export const SignIn = async (result : z.infer<typeof SignInSchema>) => {
         where: {
           email: result.email,
         },
+        include: {
+          settings: true,
+        },
       });
       if (!findUser) {
         return {status: 'error', message: 'User not found. Please sign up.'};
@@ -135,7 +138,16 @@ export const SignUp = async (result : SignUpSchemaType) => {
     if (!send) {
       return {status : 'error', message: 'Email not sent'}
     }
-    
+    // make the settings for the user
+
+    const settings = await db.settings.create({
+      data: {
+        userId: user.id,
+      },
+    });
+    if (!settings) {
+      return {status : 'error', message: 'Settings not created'}
+    }
     return {status : 'success', message: 'User created successfully. Please verify your email.'}
   } catch (error) {
     console.log(error);

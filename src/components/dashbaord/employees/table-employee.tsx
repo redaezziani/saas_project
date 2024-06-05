@@ -93,6 +93,7 @@ const EmployeesTable = () => {
       cell: ({ row }) => (
         <div>
           <ActionsWrapper
+          id={row.getValue('id')}
           />
         </div>
       ),

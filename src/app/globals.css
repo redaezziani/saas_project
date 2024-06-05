@@ -1,3 +1,5 @@
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+  
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
@@ -40,8 +42,41 @@
   
 }
 
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .color {
   color: hsla(215 20% 65% 0.358);
 }
 
 
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(215 20% 65% 0.358);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(215 20% 65% 0.558);
+}
+
+::-webkit-scrollbar-track {
+  background: hsla(215 20% 65% 0.158);
+}
+
+::-webkit-scrollbar-corner {
+  background: hsla(215 20% 65% 0.158);
+}
+
+::-webkit-scrollbar-button {
+  background: hsla(215 20% 65% 0.158);
+}
+
+::-webkit-scrollbar-button:hover {
+  background: hsla(215 20% 65% 0.358);
+}

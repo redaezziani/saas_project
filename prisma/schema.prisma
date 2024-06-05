@@ -8,43 +8,75 @@ generator client {
 }
 
 enum Role {
-  admin
+  owner
   client
   guest
+  admin
 }
 
-/// User model represents the users of the application.
+model Company {
+  id             String     @id @default(cuid())
+  name           String
+  owner          User       @relation(fields: [ownerId], references: [id])
+  ownerId        String     @unique
+  companyEmail   String?
+  compnayPhone   String?
+  companyAddress String?
+  companyCity    String?
+  employees      Employee[]
+  settingsId     String     @unique
+  expenses       Expense[]
+  notes          Note[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Settings {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @unique
+  theme      String?
+  language   String?
+  completed  Boolean  @default(false)
+  subscribed Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model User {
-  id            String          @id @default(cuid())
-  name          String?         
-  email         String?         @unique
-  emailVerified DateTime?
-  password      String         @db.VarChar(120)
-  isVerified   Boolean                  @default(false)
-  image         String?
-  account       Account?
-  role          Role            @default(guest)
-  notes         Note[]
-  employee      Employee?
-  notifications Notification[]
-  resetPasswordRequests ResetPasswordRequest[]
+  id                       String                    @id @default(cuid())
+  name                     String?
+  email                    String?                   @unique
+  emailVerified            DateTime?
+  password                 String                    @db.VarChar(120)
+  isVerified               Boolean                   @default(false)
+  image                    String?
+  account                  Account? // Consider if you still need the Account model
+  role                     Role                      @default(guest)
+  notes                    Note[]
+  company                  Company?
+  companyId                String?
+  notifications            Notification[]
+  resetPasswordRequests    ResetPasswordRequest[]
   userVerificationRequests UserVerificationRequest[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  deletedAt     DateTime?
+  settings                 Settings?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  deletedAt                DateTime?
+
   @@index([email])
 }
 
 /// VerificationToken model represents the tokens used for verifying user actions.
 model ResetPasswordRequest {
   id        String    @id @default(uuid()) @db.VarChar(36)
-  token     Int    @unique
+  token     Int       @unique
   expires   DateTime
   userId    String    @unique @db.VarChar(36)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  user      User     @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model UserVerificationRequest {
@@ -55,30 +87,13 @@ model UserVerificationRequest {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  user      User     @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }
 
-
-/// Account model represents the accounts of the users.
- enum Plan {
-  free
-  premium
-}
-
-model Account {
-  id          String   @id @default(cuid())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String   @unique
-  activePlan  Plan     @default(free)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-/// Employee model represents the employees managed by the users.
 model Employee {
-  id          String   @id @default(cuid())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String   @unique
+  id          String      @id @default(cuid())
+  company     Company     @relation(fields: [companyId], references: [id])
+  companyId   String
   firstName   String?
   lastName    String?
   phone       String?
@@ -87,35 +102,37 @@ model Employee {
   hireDate    DateTime
   jobTitle    String
   timesheets  Timesheet[]
-  projects    Project[] @relation("ProjectManager")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  manager   Project[]
+  projects    Project[]   @relation("ProjectManager")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  manager     Project[]
+
   @@index([firstName])
 }
 
-/// GeneralExpense model represents general expenses.
-model GeneralExpense {
-  id          String   @id @default(cuid())
-  name        String
-  amount      Decimal  @db.Decimal(10,2)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Expense {
+  id        String   @id @default(cuid())
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  name      String
+  amount    Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 /// Project model represents the projects managed by employees.
 model Project {
-  id         String   @id @default(cuid())
-  name       String   
+  id         String      @id @default(cuid())
+  name       String
   startDate  DateTime
   endDate    DateTime
-  budget     Decimal  @db.Decimal(10,2)
-  manager    Employee @relation(fields: [managerId], references: [id])
+  budget     Decimal     @db.Decimal(10, 2)
+  manager    Employee    @relation(fields: [managerId], references: [id])
   managerId  String
   timesheets Timesheet[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt  
-  employees  Employee[] @relation("ProjectManager")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  employees  Employee[]  @relation("ProjectManager")
 }
 
 /// Timesheet model represents the timesheets filled by employees for projects.
@@ -123,10 +140,10 @@ model Timesheet {
   id          String   @id @default(cuid())
   employee    Employee @relation(fields: [employeeId], references: [id])
   employeeId  String
-  project     Project  @relation(fields: [projectId], references: [id])  
+  project     Project  @relation(fields: [projectId], references: [id])
   projectId   String
   workDate    DateTime
-  hours       Decimal  @db.Decimal(4,2)
+  hours       Decimal  @db.Decimal(4, 2)
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -136,9 +153,11 @@ model Timesheet {
 model Note {
   id        String   @id @default(cuid())
   title     String
-  content   String   
+  content   String
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -156,6 +175,17 @@ model Notification {
   @@index([userId])
 }
 
+/// Account model represents the accounts of the users.
+enum Plan {
+  free
+  premium
+}
 
-
-
+model Account {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @unique
+  activePlan Plan     @default(free)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

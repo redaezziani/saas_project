@@ -6,6 +6,7 @@ import { Resend } from 'resend';
 import  EmailTemplate  from './email-template';
 import  ResetPasswordTemplate  from './reset-passowrd-template';
 
+
 const key = new TextEncoder().encode(secret.jwt_secret);
 
 export const createToken = async (user: any) => {
@@ -16,6 +17,7 @@ export const createToken = async (user: any) => {
             username: user.name,
             profile: user.image ?? '',
             role: user.role,
+            completed:user.settings.completed,
         };
         const token = await new SignJWT(payload)
             .setProtectedHeader({ alg: 'HS256' })

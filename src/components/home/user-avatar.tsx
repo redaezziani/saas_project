@@ -27,7 +27,7 @@ const UserAvatar =  () => {
           className="cursor-pointer "
         >
          <AvatarImage
-          src={user?.data?.avatar}
+          src={user?.data?.image}
            alt={''} />
           <AvatarFallback
           className=" capitalize"
@@ -58,6 +58,16 @@ const UserAvatar =  () => {
             <span>{link.link.replace('/', '')}</span>
           </DropdownMenuItem>
         ))}
+        <DropdownMenuSeparator
+        className="bg-slate-400/35"
+        />
+        <DropdownMenuItem
+        href="/logout"
+        className="flex cursor-pointer transition-all ease-in-out duration-500 items-center gap-2 text-red-500"
+        >
+          <Logout />
+          <span>Logout</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
