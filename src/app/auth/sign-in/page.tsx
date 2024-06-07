@@ -1,6 +1,7 @@
 import {  MoveLeft } from "lucide-react";
 import Link from "next/link";
 import SignInForm from "@/components/home/sign-in-form";
+import Image from "next/image";
 export default function SignInPage() {
   return (
     <section
@@ -20,11 +21,22 @@ export default function SignInPage() {
         </div>
         <SignInForm />
       </div>
-      <div className="w-full h-screen pt-3 col-span-1 hidden overflow-hidden md:block">
-        <img
+      <div className="w-full relative  justify-center items-center h-screen  col-span-1 hidden overflow-hidden md:flex">
+        <div className="w-full rounded-md max-w-[90%]  backdrop-blur-sm bg-white/15 absolute bottom-10 z-10 p-3 flex justify-start items-start flex-col ">
+        <h1
+        className=" text-white"
+        >
+        Experience a new era of productivity and collaboration with our cutting-edge SaaS app. Designed to streamline your workflow and empower your team, our platform offers a suite of intuitive tools and features that will revolutionize the way you work.
+
+        </h1>
+        </div>
+        <Image
+          fill
           alt="Image"
-          className="object-cover border border-border rounded-tl-xl w-full h-full"
-          src="/image.png"
+          className="object-cover w-full h-full"
+          src="/auth-img.jpg"
+          placeholder="blur"
+          blurDataURL="/auth-img.jpg"
         />
       </div>
     </section>

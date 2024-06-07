@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { Resend } from 'resend';
 import  EmailTemplate  from './email-template';
 import  ResetPasswordTemplate  from './reset-passowrd-template';
+import { redirect } from 'next/navigation';
 
 
 const key = new TextEncoder().encode(secret.jwt_secret);
@@ -146,4 +147,15 @@ export const ResetPassowrdEmail = async (secret: string, name: string, email: st
     }
 };
 
+
+export const LogOut =  async ()=>{
+    const token = cookies().get('token')?.value;
+    if (!token) {
+        return { status: 'error', message: 'No token found' };
+    }
+
+    await cookies().delete('token')
+
+    redirect('/auth/sign-in')
+}
 

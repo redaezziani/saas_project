@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 const SubmitButton: React.FC<{ ispending?: boolean, children: React.ReactNode }> = ({ ispending = false, children }) => {
   return (
     <Button
-      className='w-full bg-custom-blue-600 rounded-full mt-5'
+      className='w-full bg-custom-blue-600 rounded-lg mt-5'
       type="submit"
       loading={ispending}
       disabled={ispending}

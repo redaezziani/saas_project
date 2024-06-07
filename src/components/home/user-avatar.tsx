@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { CreditCard } from "lucide-react";
 import useSWR from 'swr';
 import {Home,Settings, Profile ,Logout} from '../dashbaord/globals/icons'
+import { LogOut } from "@/(auth)/lib/auth";
 //@ts-ignore
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const UserAvatar =  () => {
@@ -20,6 +21,10 @@ const UserAvatar =  () => {
     {link: '/profile', icon: <Profile />},
     {link: '/settings', icon: <Settings />},
    ];
+
+   const handelLogOut=async()=>{
+    await LogOut()
+   }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -62,8 +67,8 @@ const UserAvatar =  () => {
         className="bg-slate-400/35"
         />
         <DropdownMenuItem
-        href="/logout"
-        className="flex cursor-pointer transition-all ease-in-out duration-500 items-center gap-2 text-red-500"
+        onClick={handelLogOut}
+        className="flex cursor-pointer transition-all ease-in-out duration-500 items-center gap-2 text-red-500 focus:bg-red-500/10 focus:text-red-500 data-[state=open]:bg-red-500/20"
         >
           <Logout />
           <span>Logout</span>

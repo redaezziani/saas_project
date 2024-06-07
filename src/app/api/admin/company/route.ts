@@ -11,7 +11,7 @@ import { z, date } from 'zod';
 
 export const dynamic = 'force-dynamic'
 
-export const CompanySchema = z.object({
+ const CompanySchema = z.object({
     name: z.string().min(2, "Company name must be at least 2 characters"),
     companyEmail: z.string().email("Invalid email address"),
     companyPhone: z.string().regex(/^\d{10}$/, 'Please enter a valid 10-digit phone number'),
@@ -19,7 +19,7 @@ export const CompanySchema = z.object({
     companyCity: z.string().min(2, "Company city must be at least 2 characters"),
 });
 
-export type CompanyType = z.infer<typeof CompanySchema>;
+ type CompanyType = z.infer<typeof CompanySchema>;
 
 export async function POST(req: NextRequest, res: NextResponse): Promise<void | Response> {
     try {

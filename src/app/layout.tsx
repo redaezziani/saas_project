@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 
 export const metadata: Metadata = {
-  title: "nexsus",
+  title: "Talent Track",
   description: "A Next.js starter styled with Tailwind CSS and TypeScript",
 };
 

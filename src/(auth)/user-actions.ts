@@ -56,7 +56,13 @@ export const SignIn = async (result : z.infer<typeof SignInSchema>) => {
         }
         
         
-        const send = await VereficationEmail({email,name,token,id});
+        //@ts-ignore
+        const send = await VereficationEmail({
+          email: email ?? '',  // Provide a default empty string if email is null/undefined
+          name: name ?? '',
+          token: token ?? '',
+          id: id ?? '',
+        });
         if (!send) {
           return {status : 'error', message: 'Email not sent'}
         }
@@ -134,7 +140,14 @@ export const SignUp = async (result : SignUpSchemaType) => {
     if (!res) {
       return {status : 'error', message: 'Token not created'}
     }
-    const send = await VereficationEmail({email,name,token,id});
+    //@ts-ignore
+    const send = await VereficationEmail({
+      email: email ?? '',  // Provide a default empty string if email is null/undefined
+      name: name ?? '',
+      token: token ?? '',
+      id: id ?? '',
+    });
+    
     if (!send) {
       return {status : 'error', message: 'Email not sent'}
     }
@@ -207,11 +220,14 @@ export const forgetPassword = async (userEmail : string) => {
     }
     const token = await  generateRandomNumbers()
     const {email,name} = user
-    const secret= await generateRestePasswordToken(email, token);
+    const secret= await generateRestePasswordToken(
+      email ?? '',  // Provide a default empty string if email is null/undefined
+      token ?? '',
+    );
     if (!secret) {
       return {status : 'error', message: 'we can not create a reset link for you, try again laiter.'}
     }
-    const send = await ResetPassowrdEmail(secret.toString(), name ?? '', email);
+    const send = await ResetPassowrdEmail(secret.toString(), name ?? '', email ??'');
     if (!send) {
       return {status : 'error', message: 'we can not send you a reset link, try again laiter.'}
     }

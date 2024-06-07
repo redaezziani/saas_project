@@ -1,6 +1,7 @@
 import {  MoveLeft } from "lucide-react";
 import Link from "next/link";
 import SignUpForm from "@/components/auth/sign-up";
+import Image from "next/image";
 export default function SignUpPage() {
   return (
     <section
@@ -20,11 +21,19 @@ export default function SignUpPage() {
         </div>
         <SignUpForm />
       </div>
-      <div className="w-full h-screen pt-3 col-span-1 hidden overflow-hidden md:block">
-        <img
+      <div className="w-full relative h-screen  col-span-1 hidden overflow-hidden md:block">
+        <div className="w-full backdrop-blur-sm bg-white/15 absolute bottom-0 z-10 p-3 flex justify-start items-start flex-col ">
+          <h1>
+            hello
+          </h1>
+        </div>
+        <Image
+          fill
           alt="Image"
-          className="object-cover border border-border rounded-tl-xl w-full h-full"
-          src="/image.png"
+          className="object-cover w-full h-full"
+          src="/auth-img.jpg"
+          placeholder="blur"
+          blurDataURL="/auth-img.jpg"
         />
       </div>
     </section>

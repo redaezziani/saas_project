@@ -1,6 +1,8 @@
 'use client';
 
 import { Button } from "@/components/ui/button"
+import { mutate } from 'swr';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +17,9 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { DeleteIcon, EditIcon, OptionsIcon } from "./icons"
-import { Ellipsis } from "lucide-react"
+import {  OptionsIcon } from "./icons"
+import {  Edit3, Ellipsis, Trash } from "lucide-react"
 import axios from "axios";
-import { DeleteEmployee } from "@/(auth)/actions";
 
 interface ActionsProps {
   id: string
@@ -27,9 +28,15 @@ interface ActionsProps {
 export function ActionsWrapper({ id }: { ActionsProps }) {
   const handelDelete = async () => {
     try {
-      const res = await DeleteEmployee(id)
-      if (res){
-      } 
+      const res = await fetch(`/api/admin/employees/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.status === 200) {
+        mutate('/api/admin/employees'); 
+      }
     } catch (error) {
       console.log(error)
     }
@@ -61,8 +68,10 @@ export function ActionsWrapper({ id }: { ActionsProps }) {
             className="flex cursor-pointer transition-all ease-in-out duration-500 items-center gap-2 text-slate-500"
           >
 
-            <div className="flex gap-1 justify-start items-center">
-              <EditIcon />
+            <div className="flex gap-2 justify-start items-center">
+              <Edit3
+              size={16}
+              />
               Edit
             </div>
             <DropdownMenuShortcut>
@@ -75,8 +84,11 @@ export function ActionsWrapper({ id }: { ActionsProps }) {
 
             <div
               onClick={handelDelete}
-              className="flex gap-1 justify-start items-center">
-              <DeleteIcon />
+              className="flex gap-2 justify-start items-center">
+              <Trash
+              size={16}
+              
+              />
               Delete
             </div>
             <DropdownMenuShortcut>

@@ -29,6 +29,14 @@ const SearchBar = ({ children }: CommandBarProps) => {
         shortcut: ["e"],
         keywords: "employees, staff",
         perform: () => router.push("/dashboard/employees"),
+      },
+      {
+        id: "company",
+        name: "Company",
+        section: "navigation",
+        shortcut: ["e"],
+        keywords: "company, startup",
+        perform: () => router.push("/dashboard/company"),
       }
     ];
   

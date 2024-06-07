@@ -8,6 +8,7 @@ import {
     KBarResults,
     KBarSearch,
     useMatches,
+  
   } from "kbar";
 import { CornerDownLeft, MoveDown, MoveLeft, MoveUp, Search, X } from "lucide-react";
   import React, { HTMLAttributes } from "react";
@@ -27,7 +28,7 @@ import { CornerDownLeft, MoveDown, MoveLeft, MoveUp, Search, X } from "lucide-re
           className="bg-black/50 z-[99] backdrop-blur-sm">
             <KBarAnimator className="bg-white rounded-xl shadow-xl flex flex-col gap-4 w-[35rem] overflow-hidden">
               <div className="w-full">
-              <KBarSearch className="w-full outline-none px-6 py-4 text-slate-800" />
+              <KBarSearch className=" w-full  outline-none border-none focus:border-none focus:outline-none focus:ring-transparent  ring-transparent px-6 py-4 text-slate-800" />
               <Search className="absolute top-4 right-3 text-slate-500" size={18} />
               </div>
               <SearchResults />

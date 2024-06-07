@@ -11,11 +11,15 @@ import type {
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
 
+type ToastVariant = "default" | "error" | "success";
+
+// Update the ToasterToast type to include the variant
 type ToasterToast = ToastProps & {
-  id: string
-  title?: React.ReactNode
-  description?: React.ReactNode
-  action?: ToastActionElement
+  id: string;
+  variant?: ToastVariant;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  action?: ToastActionElement;
 }
 
 const actionTypes = {
@@ -163,7 +167,9 @@ function toast({ ...props }: Toast) {
       },
     },
   })
-
+  setTimeout(() => {
+    dismiss()
+  }, 5000);
   return {
     id: id,
     dismiss,

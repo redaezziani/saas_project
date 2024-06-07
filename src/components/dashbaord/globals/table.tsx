@@ -120,7 +120,7 @@ export function DataTable({ data, columns, loading = false, total = 0, element }
                         <DropdownMenuTrigger className="rounded-md" asChild>
                             <Button
                                 variant={'outline'}
-                                className="flex gap-2 justify-center items-center border-slate-400/35 text-slate-600 px-2">
+                                className="flex gap-2 border-dashed justify-center items-center border-slate-400/35 text-slate-600 px-2">
                                 <FilterIcon />
                                 Filter Columns
                             </Button>
@@ -209,7 +209,7 @@ export function DataTable({ data, columns, loading = false, total = 0, element }
 
             <div className="flex p-2 items-center justify-end space-x-2 py-4">
                 <div className="flex-1 text-xs lg:text-sm text-muted-foreground">
-                    Showing {table.getFilteredSelectedRowModel().rows.length + 1} to {table.getFilteredSelectedRowModel().rows.length + 5} of {table.getFilteredRowModel().rows.length} entries
+                    Showing {table.getFilteredSelectedRowModel().rows.length + 1} to {table.getFilteredSelectedRowModel().rows.length + 5} page
                 </div>
 
                 <Pagination table={table} />
@@ -219,57 +219,81 @@ export function DataTable({ data, columns, loading = false, total = 0, element }
 }
 
 
-const Pagination = ({ table }: any) => {
+
+const Pagination = ({ table }) => {
+    const pageCount = table.getPageCount();
+    const currentPage = table.getState().pagination.pageIndex;
+
+    const getVisiblePages = () => {
+        const pages = [];
+        if (pageCount <= 4) {
+            for (let i = 0; i < pageCount; i++) {
+                pages.push(i);
+            }
+        } else {
+            pages.push(0);
+            if (currentPage < 3) {
+                for (let i = 1; i < 3; i++) {
+                    pages.push(i);
+                }
+                pages.push('right-ellipsis');
+                pages.push(pageCount - 1);
+            } else if (currentPage >= 3 && currentPage < pageCount - 3) {
+                pages.push('left-ellipsis');
+                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                    pages.push(i);
+                }
+                pages.push('right-ellipsis');
+                pages.push(pageCount - 1);
+            } else {
+                pages.push('left-ellipsis');
+                for (let i = pageCount - 3; i < pageCount - 1; i++) {
+                    pages.push(i);
+                }
+                pages.push(pageCount - 1);
+            }
+        }
+        return pages;
+    };
+
     return (
-        <div className=" flex gap-2 justify-center items-center">
-          
-              <Button
+        <div className="flex gap-2 justify-center items-center">
+            <Button
                 variant="outline"
                 size="sm"
-                className=" size-8 p-1 border-slate-400/35 text-slate-500 font-semibold"
+                className="size-8 p-1 border-slate-400/35 text-slate-500 font-semibold"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
             >
-                <MoveLeft
-                    className=" text-slate-800 size-4"
-                />
+                <MoveLeft className="text-slate-800 size-4" />
             </Button>
-            {table.getPageOptions().map((page: any) => (
-                page >= 4 ? (
+            {getVisiblePages().map((page, index) => (
+                typeof page === 'string' ? (
+                    <span key={index} className="size-8 border-slate-400/35 text-slate-500 font-semibold">...</span>
+                ) : (
                     <Button
                         key={page}
-                        variant='ghost'
+                        variant={page === currentPage ? 'solid' : 'outline'}
                         size="sm"
-                        className=" size-8 border-slate-400/35 text-slate-500 font-semibold"
-                    >
-                        ...
-                    </Button>
-                ) :
-                    <Button
-                        key={page}
-                        variant="outline"
-                        size="sm"
-                        className=" size-8 border-slate-400/35 text-slate-500 font-semibold"
+                        className="size-8 border-slate-400/35 text-slate-500 font-semibold"
                         onClick={() => table.setPageIndex(page)}
-                        disabled={table.getPageCount() === page}
+                        disabled={page === currentPage}
                     >
                         {page + 1}
                     </Button>
+                )
             ))}
             <Button
                 variant="outline"
                 size="sm"
-                className=" size-8 p-1 border-slate-400/35 text-slate-500 font-semibold"
+                className="size-8 p-1 border-slate-400/35 text-slate-500 font-semibold"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
             >
-                <MoveLeft
-                    className=" text-slate-800 size-4 transform rotate-180"
-                />
-                
+                <MoveLeft className="text-slate-800 size-4 transform rotate-180" />
             </Button>
-          
         </div>
-    )
-}
+    );
+};
+
 export type { ColumnDef };
