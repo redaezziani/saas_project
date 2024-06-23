@@ -1,82 +1,76 @@
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-  
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  @layer base {
+@layer base {
     :root {
-      --background: 0 0% 100%;
-      --foreground: 222.2 84% 4.9%;
-      --card: 0 0% 100%;
-      --card-foreground: 222.2 84% 4.9%;
-      --popover: 0 0% 100%;
-      --popover-foreground: 222.2 84% 4.9%;
-      --primary: 214 79% 53%;
-      --primary-foreground: 210 40% 98%;
-      --secondary: 210 40% 96.1%;
-      --secondary-foreground: 222.2 47.4% 11.2%;
-      --muted: 210 40% 96.1%;
-      --muted-foreground: 215.4 16.3% 46.9%;
-      --accent: 210 40% 96.1%;
-      --accent-foreground: 222.2 47.4% 11.2%;
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 210 40% 98%;
-      --border: 214.3 31.8% 91.4%;
-      --input: 214.3 31.8% 91.4%;
-      --ring: 214 79% 53%;
-      --radius: 0.6rem;
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
+        --primary: 214 79% 53%;
+        --primary-foreground: 210 40% 98%;
+        --secondary: 210 40% 96.1%;
+        --secondary-foreground: 222.2 47.4% 11.2%;
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+        --accent: 210 40% 96.1%;
+        --accent-foreground: 222.2 47.4% 11.2%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 40% 98%;
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 214 79% 53%;
+        --radius: 0.6rem;
     }
 }
-  
-  
 
-  @layer base {
+@layer base {
     * {
-      @apply border-border;
+        @apply border-border;
     }
     body {
-      @apply bg-background text-foreground;
+        @apply bg-background text-foreground;
     }
-  
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 .color {
-  color: hsl(239 84% 67%);
+    color: hsl(25 95% 53%);
 }
 
-
-
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+    width: 5px;
+    height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsla(215 20% 65% 0.358);
+    background: hsla(215 20% 65% 0.358);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsla(215 20% 65% 0.558);
+    background: hsla(215 20% 65% 0.558);
 }
 
 ::-webkit-scrollbar-track {
-  background: hsla(215 20% 65% 0.158);
+    background: hsla(215 20% 65% 0.158);
 }
 
 ::-webkit-scrollbar-corner {
-  background: hsla(215 20% 65% 0.158);
+    background: hsla(215 20% 65% 0.158);
 }
 
 ::-webkit-scrollbar-button {
-  background: hsla(215 20% 65% 0.158);
+    background: hsla(215 20% 65% 0.158);
 }
 
 ::-webkit-scrollbar-button:hover {
-  background: hsla(215 20% 65% 0.358);
+    background: hsla(215 20% 65% 0.358);
 }

@@ -1,21 +1,22 @@
-import type { Metadata } from "next";
-
-
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "nexsus",
-  description: "Saas Image to Text Converter",
-};
+    title: "nexsus",
+    description: "Saas Image to Text Converter",
+}
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode
 }>) {
-  return (
-      <main className={"w-full flex bg-white flex-col gap-3 h-screen overflow-hidden relative justify-start  items-center"}>
-       
-        {children}
-      </main>
-  );
+    return (
+        <main
+            className={
+                "relative flex h-screen w-full flex-col items-center justify-start gap-3 overflow-hidden bg-white"
+            }
+        >
+            {children}
+        </main>
+    )
 }

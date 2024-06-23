@@ -1,9 +1,9 @@
-import React, { FC, ReactNode, useContext, useEffect } from 'react'
-import { useShortcut } from './hooks/useShortcut'
-import { MenuContext } from './MenuProvider'
-import { ActionType, MenuProps, SortedCommands } from './types'
-import Command from './Command'
-import { motion } from 'framer-motion'
+import React, { FC, ReactNode, useContext, useEffect } from "react"
+import { useShortcut } from "./hooks/useShortcut"
+import { MenuContext } from "./MenuProvider"
+import { ActionType, MenuProps, SortedCommands } from "./types"
+import Command from "./Command"
+import { motion } from "framer-motion"
 
 /**
  * The main command menu component.
@@ -15,138 +15,143 @@ import { motion } from 'framer-motion'
  * @returns {React.ReactElement} the menu provider
  */
 export const CommandMenu: FC<MenuProps> = (props) => {
-  const { config, results, state, dispatch } = useContext(MenuContext)
+    const { config, results, state, dispatch } = useContext(MenuContext)
 
-  return (
-    <Wrapper {...props}>
-      {typeof props.loadingPlaceholder !== 'undefined' && props.loadingState
-        ? props.loadingPlaceholder
-        : results?.commands.map((category, index) => (
-            <div key={index}>
-              {category.commands.length > 0 && (
-                <p
-                  className='category_header'
-                  style={{
-                    color: config?.headingColor || '#828282'
-                  }}
-                >
-                  {category.category}
-                </p>
-              )}
-              {category.commands.map((command, index) => (
-                <Command
-                  onMouseEnter={() =>
-                    dispatch({
-                      type: ActionType.CUSTOM,
-                      custom: command.globalIndex
-                    })
-                  }
-                  isSelected={state.selected === command.globalIndex}
-                  command={command}
-                  key={index}
-                />
-              ))}
-            </div>
-          ))}
-    </Wrapper>
-  )
+    return (
+        <Wrapper {...props}>
+            {typeof props.loadingPlaceholder !== "undefined" &&
+            props.loadingState
+                ? props.loadingPlaceholder
+                : results?.commands.map((category, index) => (
+                      <div key={index}>
+                          {category.commands.length > 0 && (
+                              <p
+                                  className="category_header"
+                                  style={{
+                                      color: config?.headingColor || "#828282",
+                                  }}
+                              >
+                                  {category.category}
+                              </p>
+                          )}
+                          {category.commands.map((command, index) => (
+                              <Command
+                                  onMouseEnter={() =>
+                                      dispatch({
+                                          type: ActionType.CUSTOM,
+                                          custom: command.globalIndex,
+                                      })
+                                  }
+                                  isSelected={
+                                      state.selected === command.globalIndex
+                                  }
+                                  command={command}
+                                  key={index}
+                              />
+                          ))}
+                      </div>
+                  ))}
+        </Wrapper>
+    )
 }
 
 const Wrapper: FC<MenuProps & { children: ReactNode }> = (props) => {
-  const {
-    open,
-    query,
-    setQuery,
-    setPlaceholder,
-    results,
-    setResults,
-    dispatch,
-    dimensions,
-    setCrumbs,
-    input
-  } = useContext(MenuContext)
+    const {
+        open,
+        query,
+        setQuery,
+        setPlaceholder,
+        results,
+        setResults,
+        dispatch,
+        dimensions,
+        setCrumbs,
+        input,
+    } = useContext(MenuContext)
 
-  useEffect(() => {
-    if (open === props.index)
-      setPlaceholder(
-        typeof props.placeholder === 'string'
-          ? props.placeholder
-          : 'What do you need?'
-      )
-  }, [open])
+    useEffect(() => {
+        if (open === props.index)
+            setPlaceholder(
+                typeof props.placeholder === "string"
+                    ? props.placeholder
+                    : "What do you need?",
+            )
+    }, [open])
 
-  useEffect(() => {
-    if (open !== props.index) return
+    useEffect(() => {
+        if (open !== props.index) return
 
-    dispatch({ type: ActionType.RESET, custom: 0 })
+        dispatch({ type: ActionType.RESET, custom: 0 })
 
-    if (!query || props.preventSearch) {
-      if (!query) input.current!.value = ''
-      setCrumbs(props.crumbs)
-      return setResults(props.commands)
-    }
-
-    let index = 0
-    const sorted: SortedCommands[] = []
-
-    props.commands.commands.forEach((row) => {
-      const results: SortedCommands = {
-        category: row.category,
-        commands: []
-      }
-
-      row.commands.forEach((command) => {
-        const text =
-          command.text.toLowerCase() + command.keywords?.toLowerCase()
-        if (text.includes(query.toLowerCase())) {
-          results.commands.push({ ...command, globalIndex: index })
-          index++
+        if (!query || props.preventSearch) {
+            if (!query) input.current!.value = ""
+            setCrumbs(props.crumbs)
+            return setResults(props.commands)
         }
-      })
 
-      row.subCommands?.forEach((command) => {
-        const text =
-          command.text.toLowerCase() + command.keywords?.toLowerCase()
-        if (text.includes(query.toLowerCase())) {
-          results.commands.push({ ...command, globalIndex: index })
-          index++
-        }
-      })
+        let index = 0
+        const sorted: SortedCommands[] = []
 
-      if (results.commands.length > 0) sorted.push(results)
-    })
+        props.commands.commands.forEach((row) => {
+            const results: SortedCommands = {
+                category: row.category,
+                commands: [],
+            }
 
-    return setResults({
-      index: index,
-      commands: sorted,
-      initialHeight: props.commands.initialHeight
-    })
-  }, [query, setQuery, open, props.loadingState])
+            row.commands.forEach((command) => {
+                const text =
+                    command.text.toLowerCase() + command.keywords?.toLowerCase()
+                if (text.includes(query.toLowerCase())) {
+                    results.commands.push({ ...command, globalIndex: index })
+                    index++
+                }
+            })
 
-  const upHandler = () => dispatch({ type: ActionType.DECREASE, custom: 0 })
-  const downHandler = () => dispatch({ type: ActionType.INCREASE, custom: 0 })
+            row.subCommands?.forEach((command) => {
+                const text =
+                    command.text.toLowerCase() + command.keywords?.toLowerCase()
+                if (text.includes(query.toLowerCase())) {
+                    results.commands.push({ ...command, globalIndex: index })
+                    index++
+                }
+            })
 
-  useShortcut({ targetKey: 'ArrowUp', handler: upHandler })
-  useShortcut({ targetKey: 'ArrowDown', handler: downHandler })
+            if (results.commands.length > 0) sorted.push(results)
+        })
 
-  if (open !== props.index || typeof results?.index === 'undefined') return null
+        return setResults({
+            index: index,
+            commands: sorted,
+            initialHeight: props.commands.initialHeight,
+        })
+    }, [query, setQuery, open, props.loadingState])
 
-  return (
-    <motion.div
-      className='command_wrapper'
-      role='listbox'
-      style={{
-        overflowY: results!.index >= 5 ? 'auto' : 'hidden',
-        height:
-          results!.index >= 5
-            ? results?.initialHeight
-            : props.loadingState
-            ? 'auto'
-            : results!.commands.length * (dimensions?.sectionHeight || 31) +
-              results!.index * (dimensions?.commandHeight || 54)
-      }}
-    >
-      {props.children}
-    </motion.div>
-  )
+    const upHandler = () => dispatch({ type: ActionType.DECREASE, custom: 0 })
+    const downHandler = () => dispatch({ type: ActionType.INCREASE, custom: 0 })
+
+    useShortcut({ targetKey: "ArrowUp", handler: upHandler })
+    useShortcut({ targetKey: "ArrowDown", handler: downHandler })
+
+    if (open !== props.index || typeof results?.index === "undefined")
+        return null
+
+    return (
+        <motion.div
+            className="command_wrapper"
+            role="listbox"
+            style={{
+                overflowY: results!.index >= 5 ? "auto" : "hidden",
+                height:
+                    results!.index >= 5
+                        ? results?.initialHeight
+                        : props.loadingState
+                          ? "auto"
+                          : results!.commands.length *
+                                (dimensions?.sectionHeight || 31) +
+                            results!.index * (dimensions?.commandHeight || 54),
+            }}
+        >
+            {props.children}
+        </motion.div>
+    )
 }

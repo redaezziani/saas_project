@@ -1,17 +1,16 @@
-import { create } from 'zustand'
+import { create } from "zustand"
 
 interface Plan {
-    currentPlan?: string;
-    isPlanActive: boolean;
+    currentPlan?: string
+    isPlanActive: boolean
 }
-  
 
 const usePlanStore = create<Plan>()((set) => ({
-    currentPlan: 'free',
+    currentPlan: "free",
     isPlanActive: false,
     changePlan: (newPlan: string) => set({ currentPlan: newPlan }),
     activatePlan: () => set({ isPlanActive: true }),
-    deactivatePlan: () => set({ isPlanActive: false })
+    deactivatePlan: () => set({ isPlanActive: false }),
 }))
 
 export default usePlanStore

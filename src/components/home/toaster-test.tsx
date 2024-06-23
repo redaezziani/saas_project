@@ -1,7 +1,7 @@
-'use client'
-import React from 'react'
-import { Button } from '../ui/button'
-import { MoveRight } from 'lucide-react'
+"use client"
+import React from "react"
+import { Button } from "../ui/button"
+import { MoveRight } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 const ToasterTest = () => {
     const { toast } = useToast()
@@ -14,11 +14,11 @@ const ToasterTest = () => {
     }
     return (
         <Button
-            variant={'outline'}
+            variant={"outline"}
             onClick={() => handelClick()}
-            className='flex gap-2 justify-center items-center'
+            className="flex items-center justify-center gap-2"
         >
-            open <MoveRight className='w-3' />
+            open <MoveRight className="w-3" />
         </Button>
     )
 }

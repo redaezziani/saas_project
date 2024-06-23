@@ -1,4 +1,4 @@
-import z from 'zod';
+import z from "zod"
 
 export const CompanySchema = z.object({
     name: z.string(),
@@ -7,6 +7,6 @@ export const CompanySchema = z.object({
     compnayPhone: z.string(),
     companyAddress: z.string(),
     companyCity: z.string(),
-});
+})
 
-export type CompanyType = z.infer<typeof Company>;
+export type CompanyType = z.infer<typeof Company>

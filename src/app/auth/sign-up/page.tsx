@@ -1,41 +1,32 @@
-import {  MoveLeft } from "lucide-react";
-import Link from "next/link";
-import SignUpForm from "@/components/auth/sign-up";
-import Image from "next/image";
+import { MoveLeft } from "lucide-react"
+import Link from "next/link"
+import SignUpForm from "@/components/auth/sign-up"
+import Image from "next/image"
+import { SVGLineGlowAnimateContainer } from "@/components/dashbaord/globals/three-lines"
 export default function SignUpPage() {
-  return (
-    <section
-      className=" w-full grid grid-cols-1 md:grid-cols-2 gap-3 relative  h-screen overflow-hidden"
-    >
-      <div className="w-full  col-span-1 flex h-screen relative justify-center items-center">
-        <div className="w-full absolute top-4 left-5  flex justify-start items-start">
-          <Link
-            href="/"
-            className="flex gap-1 cursor-pointer text-slate-400 hover:text-slate-500 transition-colors duration-200 ease-in-out items-center"
-          >
-            <MoveLeft
-              className=""
-              size={18} />
-              Back to home 
-          </Link>
-        </div>
-        <SignUpForm />
-      </div>
-      <div className="w-full relative h-screen  col-span-1 hidden overflow-hidden md:block">
-        <div className="w-full backdrop-blur-sm bg-white/15 absolute bottom-0 z-10 p-3 flex justify-start items-start flex-col ">
-          <h1>
-            hello
-          </h1>
-        </div>
-        <Image
-          fill
-          alt="Image"
-          className="object-cover w-full h-full"
-          src="/auth-img.jpg"
-          placeholder="blur"
-          blurDataURL="/auth-img.jpg"
-        />
-      </div>
-    </section>
-  );
+    return (
+        <section className="relative grid h-screen w-full grid-cols-1 gap-3 overflow-hidden md:grid-cols-2">
+            <div className="relative col-span-1 flex h-screen w-full items-center justify-center">
+                <div className="absolute left-5 top-4 flex w-full items-start justify-start">
+                    <Link
+                        href="/"
+                        className="flex cursor-pointer items-center gap-1 text-slate-400 transition-colors duration-200 ease-in-out hover:text-slate-500"
+                    >
+                        <MoveLeft className="" size={18} />
+                        Back to home
+                    </Link>
+                </div>
+                <SignUpForm />
+            </div>
+            <div className="relative col-span-1 hidden h-screen w-full items-center justify-center overflow-hidden border-l border-neutral-400/25 bg-neutral-950 md:flex">
+                <div className="absolute -top-80 h-72 w-[580px] rounded-s-full bg-[#1B8EF2]/70 blur-[200px]" />
+                <img
+                    src="/c.png"
+                    className="absolute -top-96 w-[70%] opacity-10"
+                    alt=""
+                />
+                <SVGLineGlowAnimateContainer />
+            </div>
+        </section>
+    )
 }

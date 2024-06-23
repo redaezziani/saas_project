@@ -1,12 +1,12 @@
-import NavBar from "@/components/home/navbar";
+import CurvedTabBar from "@/components/dashbaord/dashbaord/slider"
+import NavBar from "@/components/home/navbar"
 
 export default function Home() {
-  return (
-    <section
-    className=" w-full max-w-7xl overflow-x-hidden flex relative flex-col gap-3 justify-center items-center"
-    >
-      <main className="w-full mt-32 p-2 max-w-7xl flex justify-center items-start gap-2">
-      </main>
-    </section>
-  );
+    return (
+        <section className="relative flex w-full max-w-7xl flex-col items-center justify-center gap-3 overflow-x-hidden">
+            <main className="mt-32 flex w-full max-w-7xl items-start justify-center gap-2 p-2">
+                <CurvedTabBar />
+            </main>
+        </section>
+    )
 }
