@@ -115,7 +115,7 @@ model Expense {
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
   name      String
-  amount    Decimal  @db.Decimal(10, 2)
+  amount    Decimal?  @db.Decimal(10, 2) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

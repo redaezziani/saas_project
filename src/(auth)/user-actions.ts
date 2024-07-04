@@ -96,7 +96,11 @@ export const SignIn = async (result: z.infer<typeof SignInSchema>) => {
         if (!cookie) {
             return { status: "error", message: "Cookie not set" }
         }
-        redirect("/dashboard")
+        return {
+            status: "success",
+            message: "User logged in successfully",
+            data: findUser,
+        }
     } catch (error) {
         console.log(error)
         return {

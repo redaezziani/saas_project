@@ -138,7 +138,7 @@ export function DataTable({
                         className="w-full border-slate-400/35 bg-white"
                     />
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center flex-wrap justify-between gap-4">
                     {element}
                     <DropdownMenu>
                         <DropdownMenuTrigger className="rounded-md" asChild>

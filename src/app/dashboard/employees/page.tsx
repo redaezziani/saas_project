@@ -1,15 +1,9 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { ClipboardList, MoveRight } from "lucide-react"
 
 import React from "react"
-import CreateEmploayee from "@/components/dashbaord/employees/create-emploayee"
-import NumberTicker from "@/components/dashbaord/globals/counter"
 import EmployeesTable from "@/components/dashbaord/employees/table-employee"
 const DashboardPage = () => {
     return (
-        <div className="relative z-30 flex w-full flex-col items-start justify-start gap-2 overflow-x-hidden px-6">
+        <div className="relative z-30 flex w-full flex-col items-start justify-start gap-2 overflow-x-hidden px-4">
             <div className="mt-20 flex flex-col items-start justify-start gap-1">
                 <h1 className="text-xl font-semibold text-slate-700">
                     Employees

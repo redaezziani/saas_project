@@ -43,7 +43,7 @@ const generateEmployee = () => {
         hireDate,
        
         phone,
-        monthSalary: Math.floor(Math.random() * 5000) + 3000 // Random salary between 3000 and 8000
+        monthSalary: Math.floor(Math.random() * 2000) + 1000 // Random salary between 3000 and 8000
     };
 };
 
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest, res: NextResponse): Promise<void | R
             })
         }
 
-        for (let i = 0; i < 7000; i++) {
+        for (let i = 0; i < 100; i++) {
             await db.employee.create({
                 data:{
                     ...generateEmployee(),

@@ -39,6 +39,7 @@ const EmployeesTable = () => {
     const [selectAll, setSelectAll] = useState(false)
     const { toast } = useToast()
     const [isRefresh, setIsRefresh] = useState(false)
+    const [deleteProcess, setDeleteProcess] = useState(false)
 
     const selectedEmployees = res?.data.filter((employee: EmployeeType) =>
         selected.includes(employee.id),
@@ -73,6 +74,7 @@ const EmployeesTable = () => {
 
     const handleDelete = async () => {
         try {
+            setDeleteProcess(true)
             const res = await fetch("/api/admin/employees", {
                 method: "DELETE",
                 body: JSON.stringify({ arrayId: selected }),
@@ -85,12 +87,15 @@ const EmployeesTable = () => {
                 setSelected([])
                 toast({
                     variant: "success",
-                    title: "Employee created",
-                    description: "The employee has been created successfully",
+                    title: "Data Deleted",
+                    description: "The data has been deleted successfully",
                 })
             }
         } catch (error) {
             console.error("An unexpected error happened:", error)
+        }
+        finally {
+            setDeleteProcess(false)
         }
     }
 
@@ -191,15 +196,27 @@ const EmployeesTable = () => {
                 columns={!error && columns}
                 data={!error && res.data}
                 element={
-                    <>
+                    <div 
+                    className=" flex justify-center items-center gap-2 flex-wrap"
+                    >
                         {selected.length > 1 && (
                             <Button
                                 onClick={handleDelete}
                                 variant={"outline"}
                                 className="flex items-center gap-2 text-red-500 hover:text-red-600"
+                                disabled={deleteProcess}
+                                loading={deleteProcess}
                             >
-                                <Trash size={18} className="mr-2" />
-                                Delete
+                                {deleteProcess ? (
+                                  <p>
+                                     process...
+                                  </p>
+                                ) : (<>
+                                 <Trash size={18} className="mr-2" />
+                                 Delete
+                                </>
+                                   
+                                )}
                             </Button>
                         )}
                         {selected.length > 0 && (
@@ -225,7 +242,7 @@ const EmployeesTable = () => {
                             />
                         </Button>
                         <CreateEmployee />
-                    </>
+                    </div>
                 }
             />
         </div>
